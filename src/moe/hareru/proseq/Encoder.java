@@ -4,12 +4,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class Encoder {
-    private static final Logger logger=LoggerFactory.getLogger(Encoder.class);
 }
 class OneHot_Encoder extends Encoder{
     private static final Logger logger=LoggerFactory.getLogger(OneHot_Encoder.class);
     private static final String a_acid="ACDEFGHIKLMNPQRSTVWY";
-    private int[] accl_map;
+    private final int[] accl_map;
     public OneHot_Encoder(){
         accl_map=new int[256];
         for(int i=0;i<a_acid.length();i++) accl_map[a_acid.charAt(i)] = i+1;
