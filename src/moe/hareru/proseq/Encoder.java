@@ -8,18 +8,19 @@ public class Encoder {
 class OneHot_Encoder extends Encoder{
     private static final Logger logger=LoggerFactory.getLogger(OneHot_Encoder.class);
     private static final String a_acid="ACDEFGHIKLMNPQRSTVWY";
-    private final int[] accl_map;
+    private final int[] acc_map;
     public OneHot_Encoder(){
-        accl_map=new int[256];
-        for(int i=0;i<a_acid.length();i++) accl_map[a_acid.charAt(i)] = i+1;
+        acc_map=new int[256];
+        for(int i=0;i<a_acid.length();i++) acc_map[a_acid.charAt(i)] = i+1;
+        logger.debug("OH_enc init with:"+a_acid);
     }
-    public String[] Encode(String[] seqs){
-        String[] ans=new String[seqs.length];
-        for(int i = 0; i<seqs.length; ++i){
+    public String[] Encode(String[] seq){
+        String[] ans=new String[seq.length];
+        for(int i = 0; i<seq.length; ++i){
             boolean[] result = new boolean[a_acid.length()];
-            for(char ch:seqs[i].toCharArray()){
-                if (accl_map[ch]!=0) {
-                    result[accl_map[ch]-1]=true;
+            for(char ch:seq[i].toCharArray()){
+                if (acc_map[ch]!=0) {
+                    result[acc_map[ch]-1]=true;
                 }
             }
             StringBuilder tmp = new StringBuilder();
