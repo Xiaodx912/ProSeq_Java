@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory;
 import static org.junit.jupiter.api.Assertions.*;
 
 class OneHot_EncoderTest {
-    private static final Logger logger = LoggerFactory.getLogger(OneHot_Encoder.class);
+    private static final Logger logger = LoggerFactory.getLogger(OneHot_EncoderTest.class);
 
     @Test
     void encode() {
@@ -18,7 +18,7 @@ class OneHot_EncoderTest {
 }
 
 class WordBag_EncoderTest {
-    private static final Logger logger = LoggerFactory.getLogger(WordBag_Encoder.class);
+    private static final Logger logger = LoggerFactory.getLogger(WordBag_EncoderTest.class);
 
     @Test
     void encode() {
