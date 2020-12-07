@@ -5,8 +5,9 @@ import org.ahocorasick.trie.PayloadTrie;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Arrays;
 import java.util.Collection;
+
+import static java.lang.Integer.min;
 
 public class Encoder {
 }
@@ -75,6 +76,7 @@ class WordBag_Encoder extends Encoder {
             for (PayloadEmit<Integer> emit : emits) ++result[emit.getPayload()];
             StringBuilder tmp = new StringBuilder();
             for (Integer b : result) {
+                b = min(b, 9);
                 tmp.append(b.toString());
             }
             ans[i] = tmp.toString();

@@ -24,9 +24,8 @@ public class DataMgr {
         this.seqDic = new HashMap<>();
         String[] buffer = data.split("\n");
         for (int i = 0; i < buffer.length; i += 2) {
-            if (buffer[i].startsWith(">")) {
-                seqDic.put(buffer[i].substring(1).trim(), buffer[i + 1].trim());
-            }
+            while (!buffer[i].startsWith(">")) ++i;
+            seqDic.put(buffer[i].substring(1).trim(), buffer[i + 1].trim());
         }
         logger.debug("sepDic init OK");
     }
