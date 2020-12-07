@@ -34,10 +34,12 @@ public class DataMgr {
     public String getSeq(String ident) {
         return seqDic.get(ident);
     }
-    public int size(){
+
+    public int size() {
         return seqDic.size();
     }
-    public String[] getAll(){
+
+    public String[] getAll() {
         return seqDic.values().toArray(new String[this.size()]);
     }
 }
