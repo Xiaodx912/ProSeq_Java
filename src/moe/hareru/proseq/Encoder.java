@@ -24,11 +24,11 @@ class OneHot_Encoder implements Encoder {
     }
 
     public OneHot_Encoder(String a_acid) {
-        logger.debug("OHenc init with AminoAcid list include {} items.", a_acid.length());
+        logger.debug("OH_enc init with AminoAcid list include {} items.", a_acid.length());
         this.vecDim_count = a_acid.length();
         acc_map = new int[256];
         for (int i = 0; i < a_acid.length(); i++) acc_map[a_acid.charAt(i)] = i + 1;
-        logger.debug("OHenc accelerate map build fin.");
+        logger.debug("OH_enc accelerate map build fin.");
     }
 
     public String[] Encode(String[] seq) {
@@ -60,10 +60,10 @@ class WordBag_Encoder implements Encoder {
     }
 
     public WordBag_Encoder(String[] dic) {
-        logger.debug("WBenc init with {} words.", dic.length);
+        logger.debug("WB_enc init with {} words.", dic.length);
         this.WB_dic = dic.clone();
         PayloadTrie.PayloadTrieBuilder<Integer> T_Builder = PayloadTrie.builder();
-        logger.debug("buliding Trie tree for ACautomaton...");
+        logger.debug("building Trie tree for AC_automaton...");
         for (int i = 0; i < WB_dic.length; ++i) T_Builder.addKeyword(WB_dic[i], i);
         AC_Automaton = T_Builder.build();
         logger.debug("Trie tree ready.");
