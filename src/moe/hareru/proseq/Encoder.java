@@ -9,10 +9,11 @@ import java.util.Collection;
 
 import static java.lang.Integer.min;
 
-public class Encoder {
+public interface Encoder {
+    String[] Encode(String[] seq);
 }
 
-class OneHot_Encoder extends Encoder {
+class OneHot_Encoder implements Encoder {
     private static final Logger logger = LoggerFactory.getLogger(OneHot_Encoder.class);
     private static final String default_a_acid = "ACDEFGHIKLMNPQRSTVWY";
     private final int[] acc_map;
@@ -49,7 +50,7 @@ class OneHot_Encoder extends Encoder {
     }
 }
 
-class WordBag_Encoder extends Encoder {
+class WordBag_Encoder implements Encoder {
     private static final Logger logger = LoggerFactory.getLogger(WordBag_Encoder.class);
     private String[] WB_dic;
     private PayloadTrie<Integer> AC_Automaton;
