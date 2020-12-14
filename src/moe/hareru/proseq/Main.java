@@ -1,5 +1,6 @@
 package moe.hareru.proseq;
 
+import de.bwaldvogel.liblinear.Problem;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,5 +25,6 @@ public class Main {
         logger.debug(Arrays.toString(full_enc.Encode(d.getAll())));
 
 
+        Problem p = new Problem();
     }
 }

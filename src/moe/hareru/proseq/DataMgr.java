@@ -3,11 +3,14 @@ package moe.hareru.proseq;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
 import java.nio.file.*;
 import java.util.*;
+import java.util.regex.*;
 
 public class DataMgr {
     private static final Logger logger = LoggerFactory.getLogger(DataMgr.class);
+    private static final Pattern Protein_re = Pattern.compile(">(\\w+)[\\n\\r]+(\\w+)");
     private Map<String, String> seqDic;
 
     public DataMgr(Path data_path) {
@@ -15,19 +18,21 @@ public class DataMgr {
         String data;
         try {
             data = new String(Files.readAllBytes(data_path));
-        } catch (Exception e) {
-            logger.error("Except:" + e);
+        } catch (IOException e) {
             e.printStackTrace();
             return;
         }
         logger.debug("File OK.");
+
         this.seqDic = new HashMap<>();
-        String[] buffer = data.split("\n");
-        for (int i = 0; i < buffer.length; i += 2) {
-            while (!buffer[i].startsWith(">")) ++i;
-            seqDic.put(buffer[i].substring(1).trim(), buffer[i + 1].trim());
+        Scanner F_scanner = new Scanner(data).useDelimiter("(?=>\\w+[\\n\\r]+\\w+)");
+        while (F_scanner.hasNext()) {
+            Matcher m = Protein_re.matcher(F_scanner.next());
+            if (m.find()) seqDic.put(m.group(1).trim(), m.group(2).trim());
         }
         logger.debug("sepDic init OK");
+
+
     }
 
     public String getSeq(String ident) {

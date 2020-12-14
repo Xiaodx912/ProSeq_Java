@@ -1,7 +1,11 @@
 package moe.hareru.proseq;
 
+import de.bwaldvogel.liblinear.Feature;
+import de.bwaldvogel.liblinear.FeatureNode;
+
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 
 public class utils {
     private static final String dAA = "ACDEFGHIKLMNPQRSTVWY";
@@ -24,4 +28,6 @@ public class utils {
         }
         return ans.toArray(new String[0]);
     }
+
 }
+

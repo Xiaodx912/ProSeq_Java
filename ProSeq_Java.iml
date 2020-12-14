@@ -27,5 +27,6 @@
     </orderEntry>
     <orderEntry type="library" exported="" name="org.slf4j:slf4j-log4j12:1.7.12" level="project" />
     <orderEntry type="library" name="ahocorasick" level="project" />
+    <orderEntry type="library" name="de.bwaldvogel:liblinear:2.42" level="project" />
   </component>
 </module>

@@ -1,7 +1,7 @@
 <component name="libraryTable">
   <library name="ahocorasick">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/libs/ahocorasick.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/ahocorasick.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />
