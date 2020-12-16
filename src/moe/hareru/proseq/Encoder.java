@@ -7,8 +7,6 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Collection;
 
-import static java.lang.Integer.min;
-
 public interface Encoder {
     String[] Encode(String[] seq);
 }
@@ -83,12 +81,9 @@ class WordBag_Encoder implements Encoder {
         for (int i = 0; i < seq.length; ++i) {
             int[] result = new int[this.WB_dic.length];
             Collection<PayloadEmit<Integer>> emits = AC_Automaton.parseText(seq[i]);
-            for (PayloadEmit<Integer> emit : emits) ++result[emit.getPayload()];
+            for (PayloadEmit<Integer> emit : emits) if(result[emit.getPayload()]<Count_lim) ++result[emit.getPayload()];
             StringBuilder tmp = new StringBuilder();
-            for (Integer b : result) {
-                b = min(b, Count_lim);
-                tmp.append(b.toString());
-            }
+            for (Integer b : result) tmp.append(b.toString());
             ans[i] = tmp.toString();
         }
         return ans;
