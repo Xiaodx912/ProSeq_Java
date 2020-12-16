@@ -25,9 +25,9 @@ public class DataMgr {
         logger.debug("File OK.");
 
         this.seqDic = new HashMap<>();
-        Scanner F_scanner = new Scanner(data).useDelimiter("(?=>\\w+[\\n\\r]+\\w+)");
-        while (F_scanner.hasNext()) {
-            Matcher m = Protein_re.matcher(F_scanner.next());
+        Scanner Fasta_scanner = new Scanner(data).useDelimiter("(?=>\\w+[\\n\\r]+\\w+)");
+        while (Fasta_scanner.hasNext()) {
+            Matcher m = Protein_re.matcher(Fasta_scanner.next());
             if (m.find()) seqDic.put(m.group(1).trim(), m.group(2).trim());
         }
         logger.debug("sepDic init OK");

@@ -16,8 +16,10 @@ public interface Encoder {
 class OneHot_Encoder implements Encoder {
     private static final Logger logger = LoggerFactory.getLogger(OneHot_Encoder.class);
     private static final String default_a_acid = "ACDEFGHIKLMNPQRSTVWY";
-    private final int[] acc_map;
-    private final int vecDim_count;
+    private int[] acc_map = null;
+    private int vecDim_count = 0;
+    private WordBag_Encoder helper =null;
+    private boolean multi_mode=false;
 
     public OneHot_Encoder() {
         this(default_a_acid);
@@ -30,8 +32,13 @@ class OneHot_Encoder implements Encoder {
         for (int i = 0; i < a_acid.length(); i++) acc_map[a_acid.charAt(i)] = i + 1;
         logger.debug("OH_enc accelerate map build fin.");
     }
+    public OneHot_Encoder(String[] seq_list){
+        helper=new WordBag_Encoder(seq_list);
+        multi_mode=true;
+    }
 
     public String[] Encode(String[] seq) {
+        if(multi_mode) return helper.Encode(seq,1);
         String[] ans = new String[seq.length];
         for (int i = 0; i < seq.length; ++i) {
             boolean[] result = new boolean[vecDim_count];
@@ -69,7 +76,9 @@ class WordBag_Encoder implements Encoder {
         logger.debug("Trie tree ready.");
     }
 
-    public String[] Encode(String[] seq) {
+    public String[] Encode(String[] seq) { return Encode(seq, 9); }
+
+    public String[] Encode(String[] seq, int Count_lim) {
         String[] ans = new String[seq.length];
         for (int i = 0; i < seq.length; ++i) {
             int[] result = new int[this.WB_dic.length];
@@ -77,7 +86,7 @@ class WordBag_Encoder implements Encoder {
             for (PayloadEmit<Integer> emit : emits) ++result[emit.getPayload()];
             StringBuilder tmp = new StringBuilder();
             for (Integer b : result) {
-                b = min(b, 9);
+                b = min(b, Count_lim);
                 tmp.append(b.toString());
             }
             ans[i] = tmp.toString();
