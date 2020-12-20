@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import java.util.Collection;
 
 public interface Encoder {
+    String Encode(String seq);
     String[] Encode(String[] seq);
 }
 
@@ -35,22 +36,25 @@ class OneHot_Encoder implements Encoder {
         multi_mode=true;
     }
 
+    public String Encode(String seq){
+        if(multi_mode) return helper.Encode(seq,1);
+        boolean[] result = new boolean[vecDim_count];
+        for (char ch : seq.toCharArray()) {
+            if (acc_map[ch] != 0) {
+                result[acc_map[ch] - 1] = true;
+            }
+        }
+        StringBuilder tmp = new StringBuilder();
+        for (boolean b : result) {
+            tmp.append(b ? "1" : "0");
+        }
+        return tmp.toString();
+    }
+
     public String[] Encode(String[] seq) {
         if(multi_mode) return helper.Encode(seq,1);
         String[] ans = new String[seq.length];
-        for (int i = 0; i < seq.length; ++i) {
-            boolean[] result = new boolean[vecDim_count];
-            for (char ch : seq[i].toCharArray()) {
-                if (acc_map[ch] != 0) {
-                    result[acc_map[ch] - 1] = true;
-                }
-            }
-            StringBuilder tmp = new StringBuilder();
-            for (boolean b : result) {
-                tmp.append(b ? "1" : "0");
-            }
-            ans[i] = tmp.toString();
-        }
+        for (int i = 0; i < seq.length; ++i) ans[i] = Encode(seq[i]);
         return ans;
     }
 }
@@ -74,18 +78,21 @@ class WordBag_Encoder implements Encoder {
         logger.debug("Trie tree ready.");
     }
 
+    public String Encode(String seq) {return Encode(seq,9);}
+    public String Encode(String seq, int Count_lim){
+        int[] result = new int[this.WB_dic.length];
+        Collection<PayloadEmit<Integer>> emits = AC_Automaton.parseText(seq);
+        for (PayloadEmit<Integer> emit : emits) if(result[emit.getPayload()]<Count_lim) ++result[emit.getPayload()];
+        StringBuilder tmp = new StringBuilder();
+        for (Integer b : result) tmp.append(b.toString());
+        return tmp.toString();
+    }
+
     public String[] Encode(String[] seq) { return Encode(seq, 9); }
 
     public String[] Encode(String[] seq, int Count_lim) {
         String[] ans = new String[seq.length];
-        for (int i = 0; i < seq.length; ++i) {
-            int[] result = new int[this.WB_dic.length];
-            Collection<PayloadEmit<Integer>> emits = AC_Automaton.parseText(seq[i]);
-            for (PayloadEmit<Integer> emit : emits) if(result[emit.getPayload()]<Count_lim) ++result[emit.getPayload()];
-            StringBuilder tmp = new StringBuilder();
-            for (Integer b : result) tmp.append(b.toString());
-            ans[i] = tmp.toString();
-        }
+        for (int i = 0; i < seq.length; ++i) ans[i] = Encode(seq[i],Count_lim);
         return ans;
     }
 }

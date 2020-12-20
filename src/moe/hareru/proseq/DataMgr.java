@@ -3,7 +3,7 @@ package moe.hareru.proseq;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.*;
 import java.util.*;
 import java.util.regex.*;
@@ -45,5 +45,25 @@ public class DataMgr {
 
     public String[] getAll() {
         return seqDic.values().toArray(new String[this.size()]);
+    }
+
+    public void encAll(Encoder enc,String output){
+        OutputStream out;
+        try {
+            out=new FileOutputStream(output);
+        } catch (FileNotFoundException e) {
+            logger.error("output path illegal");
+            e.printStackTrace();
+            return;
+        }
+        OutputStreamWriter ow=new OutputStreamWriter(out);
+        for (Map.Entry<String, String> entry : seqDic.entrySet()) {
+            try {
+                ow.write(">" + entry.getKey() + "\n" + enc.Encode(entry.getKey())+"\n");
+            } catch (IOException e) {
+                logger.error("write error");
+                e.printStackTrace();
+            }
+        }
     }
 }
