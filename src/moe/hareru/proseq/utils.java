@@ -6,7 +6,9 @@ import java.util.Arrays;
 public class utils {
     private static final String dAA = "ACDEFGHIKLMNPQRSTVWY";
 
-    public static String[] WB_builder(int len) { return WB_builder(len, dAA); }
+    public static String[] WB_builder(int len) {
+        return WB_builder(len, dAA);
+    }
 
     public static String[] WB_builder(int len, String AA) {
         if (len < 1) return new String[]{""};

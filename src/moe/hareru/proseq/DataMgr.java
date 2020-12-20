@@ -10,7 +10,7 @@ import java.util.regex.*;
 
 public class DataMgr {
     private static final Logger logger = LoggerFactory.getLogger(DataMgr.class);
-    private static final Pattern Protein_re = Pattern.compile(">(\\w+)[\\n\\r]+(\\w+)");
+    private static final Pattern Protein_re = Pattern.compile(">(\\w+)\\s+(\\w+)");
     private Map<String, String> seqDic;
 
     public DataMgr(Path data_path) {
@@ -25,7 +25,7 @@ public class DataMgr {
         logger.debug("File OK.");
 
         this.seqDic = new HashMap<>();
-        Scanner Fasta_scanner = new Scanner(data).useDelimiter("(?=>\\w+[\\n\\r]+\\w+)");
+        Scanner Fasta_scanner = new Scanner(data).useDelimiter("(?=>\\w+\\s+\\w+)");
         while (Fasta_scanner.hasNext()) {
             Matcher m = Protein_re.matcher(Fasta_scanner.next());
             if (m.find()) seqDic.put(m.group(1).trim(), m.group(2).trim());
@@ -47,23 +47,32 @@ public class DataMgr {
         return seqDic.values().toArray(new String[this.size()]);
     }
 
-    public void encAll(Encoder enc,String output){
+    public void encAll(Encoder enc, String output) {
         OutputStream out;
         try {
-            out=new FileOutputStream(output);
+            out = new FileOutputStream(output);
         } catch (FileNotFoundException e) {
             logger.error("output path illegal");
             e.printStackTrace();
             return;
         }
-        OutputStreamWriter ow=new OutputStreamWriter(out);
+        OutputStreamWriter ow = new OutputStreamWriter(out);
+        logger.debug("stream ready");
         for (Map.Entry<String, String> entry : seqDic.entrySet()) {
             try {
-                ow.write(">" + entry.getKey() + "\n" + enc.Encode(entry.getKey())+"\n");
+                ow.write(">" + entry.getKey() + "\n" + enc.Encode(entry.getValue()) + "\n");
             } catch (IOException e) {
                 logger.error("write error");
                 e.printStackTrace();
             }
         }
+        try {
+            ow.close();
+            out.close();
+        } catch (IOException e) {
+            logger.error("close file error");
+            e.printStackTrace();
+        }
     }
+
 }
